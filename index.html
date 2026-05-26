@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOBIE</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Movie + Book Archive</p>
+        <h1>MOBIE</h1>
+        <p class="subtitle">영화와 책을 기록하고, 별점과 장르를 기준으로 추천받는 개인 콘텐츠 기록장</p>
+      </div>
+      <button class="primary-button" id="openAddForm" type="button">+ 기록 추가</button>
+    </header>
+
+    <main class="app-shell">
+      <section class="toolbar">
+        <div class="segmented">
+          <button class="segment active" type="button" data-filter="all">전체</button>
+          <button class="segment" type="button" data-filter="영화">영화</button>
+          <button class="segment" type="button" data-filter="책">책</button>
+        </div>
+        <label class="select-field">
+          <span>정렬</span>
+          <select id="sortSelect">
+            <option value="latest">최신순</option>
+            <option value="rating">별점 높은순</option>
+            <option value="title">제목순</option>
+          </select>
+        </label>
+        <label class="select-field">
+          <span>추천 장르</span>
+          <select id="genreSelect">
+            <option value="all">전체</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="summary-grid">
+        <article><span>전체 기록</span><strong id="totalCount">0</strong></article>
+        <article><span>추천 가능</span><strong id="recommendCount">0</strong></article>
+        <article><span>평균 별점</span><strong id="averageRating">0.0</strong></article>
+      </section>
+
+      <section class="content-grid">
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <h2>기록 목록</h2>
+              <p>영화와 책 기록을 조회하고 관리합니다.</p>
+            </div>
+          </div>
+          <div class="record-list" id="recordList"></div>
+        </section>
+
+        <aside class="panel">
+          <div class="section-heading">
+            <div>
+              <h2>추천 콘텐츠</h2>
+              <p>별점 4점 이상 항목을 장르별로 확인합니다.</p>
+            </div>
+          </div>
+          <div class="recommend-list" id="recommendList"></div>
+        </aside>
+      </section>
+    </main>
+
+    <dialog class="record-dialog" id="recordDialog">
+      <form id="recordForm" method="dialog">
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Record</p>
+            <h2 id="formTitle">기록 추가</h2>
+          </div>
+          <button class="icon-button" id="closeDialog" type="button" aria-label="닫기">×</button>
+        </div>
+        <input type="hidden" id="recordId" />
+        <label><span>제목</span><input id="titleInput" type="text" placeholder="예: 인터스텔라" required /></label>
+        <div class="form-row">
+          <label><span>유형</span><select id="typeInput"><option>영화</option><option>책</option></select></label>
+          <label><span>장르</span><input id="genreInput" type="text" placeholder="예: SF" required /></label>
+        </div>
+        <div class="form-row">
+          <label><span>별점</span><select id="ratingInput"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+          <label><span>감상 상태</span><select id="statusInput"><option>보고 싶음</option><option>보는 중</option><option>완료</option></select></label>
+        </div>
+        <label><span>한 줄 감상평</span><textarea id="reviewInput" rows="3" required></textarea></label>
+        <label class="checkbox-field"><input id="recommendedInput" type="checkbox" /><span>추천 여부</span></label>
+        <label><span>추천 이유</span><textarea id="recommendReasonInput" rows="2"></textarea></label>
+        <p class="form-error" id="formError"></p>
+        <div class="dialog-actions">
+          <button class="ghost-button" id="cancelForm" type="button">취소</button>
+          <button class="primary-button" type="submit">저장</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="record-dialog" id="detailDialog">
+      <article class="detail-view">
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow" id="detailType">영화</p>
+            <h2 id="detailTitle">제목</h2>
+          </div>
+          <button class="icon-button" id="closeDetail" type="button" aria-label="닫기">×</button>
+        </div>
+        <dl class="detail-meta">
+          <div><dt>장르</dt><dd id="detailGenre"></dd></div>
+          <div><dt>별점</dt><dd id="detailRating"></dd></div>
+          <div><dt>상태</dt><dd id="detailStatus"></dd></div>
+          <div><dt>추천</dt><dd id="detailRecommended"></dd></div>
+        </dl>
+        <section><h3>한 줄 감상평</h3><p id="detailReview"></p></section>
+        <section><h3>추천 이유</h3><p id="detailReason"></p></section>
+        <div class="dialog-actions">
+          <button class="ghost-button danger" id="deleteRecord" type="button">삭제</button>
+          <button class="primary-button" id="editRecord" type="button">수정</button>
+        </div>
+      </article>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
