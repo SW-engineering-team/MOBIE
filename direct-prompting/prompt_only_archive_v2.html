@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 영화 & 책 아카이브</title>
+
+<style>
+body{
+    font-family: "Pretendard", sans-serif;
+    max-width:1000px;
+    margin:40px auto;
+    padding:20px;
+    background:#f4f4f4;
+}
+
+h1{
+    text-align:center;
+}
+
+.form-box{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+input, select, textarea{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    margin-bottom:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+
+button{
+    background:#111827;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.filter{
+    margin:20px 0;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:16px;
+}
+
+.card{
+    background:white;
+    padding:16px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.tag{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    color:white;
+    font-size:12px;
+}
+
+.book{
+    background:#2563eb;
+}
+
+.movie{
+    background:#dc2626;
+}
+
+.rating{
+    color:#f59e0b;
+    font-weight:bold;
+}
+
+.delete{
+    background:#ef4444;
+    margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎬 📚 나의 아카이브</h1>
+
+<div class="form-box">
+    <h2>새 항목 추가</h2>
+
+    <select id="type">
+        <option value="movie">영화</option>
+        <option value="book">책</option>
+    </select>
+
+    <input id="title" placeholder="제목">
+
+    <input id="creator" placeholder="감독 또는 저자">
+
+    <input id="date" type="date">
+
+    <input id="rating" type="number" min="1" max="5" placeholder="평점 (1~5)">
+
+    <textarea id="memo" rows="4" placeholder="감상 메모"></textarea>
+
+    <button onclick="addItem()">저장하기</button>
+</div>
+
+<div class="filter">
+    <select id="filter" onchange="renderItems()">
+        <option value="all">전체</option>
+        <option value="movie">영화만</option>
+        <option value="book">책만</option>
+    </select>
+</div>
+
+<div class="grid" id="archiveList"></div>
+
+<script>
+let items = JSON.parse(localStorage.getItem("archive")) || [];
+
+function saveData(){
+    localStorage.setItem("archive", JSON.stringify(items));
+}
+
+function addItem(){
+
+    const item = {
+        id: Date.now(),
+        type: document.getElementById("type").value,
+        title: document.getElementById("title").value,
+        creator: document.getElementById("creator").value,
+        date: document.getElementById("date").value,
+        rating: document.getElementById("rating").value,
+        memo: document.getElementById("memo").value
+    };
+
+    if(!item.title){
+        alert("제목을 입력하세요.");
+        return;
+    }
+
+    items.unshift(item);
+    saveData();
+    renderItems();
+
+    document.getElementById("title").value="";
+    document.getElementById("creator").value="";
+    document.getElementById("date").value="";
+    document.getElementById("rating").value="";
+    document.getElementById("memo").value="";
+}
+
+function deleteItem(id){
+    items = items.filter(item => item.id !== id);
+    saveData();
+    renderItems();
+}
+
+function renderItems(){
+
+    const filter = document.getElementById("filter").value;
+
+    const filtered = filter === "all"
+        ? items
+        : items.filter(item => item.type === filter);
+
+    const list = document.getElementById("archiveList");
+
+    list.innerHTML = filtered.map(item => `
+        <div class="card">
+            <span class="tag ${item.type}">
+                ${item.type === "movie" ? "영화" : "책"}
+            </span>
+
+            <h3>${item.title}</h3>
+
+            <p>
+                ${item.type === "movie" ? "감독" : "저자"} :
+                ${item.creator || "-"}
+            </p>
+
+            <p>감상일 : ${item.date || "-"}</p>
+
+            <p class="rating">⭐ ${item.rating || "-"}/5</p>
+
+            <p>${item.memo || ""}</p>
+
+            <button
+                class="delete"
+                onclick="deleteItem(${item.id})">
+                삭제
+            </button>
+        </div>
+    `).join("");
+}
+
+renderItems();
+</script>
+
+</body>
+</html>
