@@ -23,6 +23,7 @@ const detailDialog = $("#detailDialog");
 const recordForm = $("#recordForm");
 const formTitle = $("#formTitle");
 const formError = $("#formError");
+const recommendReasonField = $("#recommendReasonField");
 const fields = {
   id: $("#recordId"),
   title: $("#titleInput"),
@@ -130,6 +131,15 @@ function renderRecommendations() {
     </article>`).join("");
 }
 
+function syncRecommendReasonField() {
+  const isRecommended = fields.recommended.checked;
+  recommendReasonField.classList.toggle("is-hidden", !isRecommended);
+  fields.recommendReason.disabled = !isRecommended;
+  if (!isRecommended) {
+    fields.recommendReason.value = "";
+  }
+}
+
 function openForm(record = null) {
   formError.textContent = "";
   recordForm.reset();
@@ -150,6 +160,7 @@ function openForm(record = null) {
     fields.rating.value = "5";
     fields.status.value = "보고 싶음";
   }
+  syncRecommendReasonField();
   recordDialog.showModal();
 }
 
@@ -158,7 +169,7 @@ function handleSubmit(event) {
   const title = fields.title.value.trim();
   const genre = fields.genre.value.trim();
   const review = fields.review.value.trim();
-  const recommendReason = fields.recommendReason.value.trim();
+  const recommendReason = fields.recommended.checked ? fields.recommendReason.value.trim() : "";
   if (!title || !genre || !review) {
     formError.textContent = "제목, 장르, 한 줄 감상평은 반드시 입력해야 합니다.";
     return;
@@ -229,6 +240,7 @@ $("#editRecord").addEventListener("click", () => {
 });
 $("#deleteRecord").addEventListener("click", deleteSelectedRecord);
 recordForm.addEventListener("submit", handleSubmit);
+fields.recommended.addEventListener("change", syncRecommendReasonField);
 sortSelect.addEventListener("change", (event) => {
   sortMode = event.target.value;
   renderRecords();

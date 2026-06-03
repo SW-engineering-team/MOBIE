@@ -68,6 +68,7 @@ select { min-width: 150px; padding: 10px 12px; }
 .section-heading { margin-bottom: 16px; }
 .section-heading h2 { margin-bottom: 4px; font-size: 1.25rem; }
 .section-heading p { margin-bottom: 0; color: var(--muted); font-size: 0.92rem; }
+.criteria-note { margin-top: 8px; line-height: 1.45; }
 .record-list, .recommend-list { display: grid; gap: 12px; }
 .record-card, .recommend-card, .empty-state { border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 .record-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; padding: 16px; }
@@ -98,6 +99,7 @@ textarea { resize: vertical; }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .checkbox-field { display: flex; align-items: center; gap: 9px; }
 .checkbox-field input { width: 18px; height: 18px; }
+.recommend-reason-field.is-hidden { display: none; }
 .form-error { min-height: 20px; margin-bottom: 0; color: var(--red); font-size: 0.92rem; font-weight: 800; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
 .detail-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; }

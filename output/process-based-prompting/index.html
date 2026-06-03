@@ -61,6 +61,7 @@
             <div>
               <h2>추천 콘텐츠</h2>
               <p>별점 4점 이상 항목을 장르별로 확인합니다.</p>
+              <p class="criteria-note">추천 목록은 별점 4점 이상인 기록을 자동으로 보여주며, 추천 여부는 사용자가 직접 표시한 값입니다.</p>
             </div>
           </div>
           <div class="recommend-list" id="recommendList"></div>
@@ -89,7 +90,7 @@
         </div>
         <label><span>한 줄 감상평</span><textarea id="reviewInput" rows="3" required></textarea></label>
         <label class="checkbox-field"><input id="recommendedInput" type="checkbox" /><span>추천 여부</span></label>
-        <label><span>추천 이유</span><textarea id="recommendReasonInput" rows="2"></textarea></label>
+        <label class="recommend-reason-field is-hidden" id="recommendReasonField"><span>추천 이유</span><textarea id="recommendReasonInput" rows="2" disabled></textarea></label>
         <p class="form-error" id="formError"></p>
         <div class="dialog-actions">
           <button class="ghost-button" id="cancelForm" type="button">취소</button>
